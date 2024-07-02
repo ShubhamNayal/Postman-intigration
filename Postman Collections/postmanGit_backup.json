@@ -1,0 +1,668 @@
+{
+	"info": {
+		"_postman_id": "36001f0a-c9b0-4305-883f-cc17386afe44",
+		"name": "user.api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "feedback_dialog",
+			"item": [
+				{
+					"name": "https://api.pocketfm.com/v2/user_api/user.feedback_popup_dialog",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test Case: Check if the response has the correct structure",
+									"pm.test(\"Response has the correct structure\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"result\");",
+									"    pm.expect(jsonData.result).to.have.property(\"shouldShowDialog\");",
+									"    pm.expect(jsonData.result).to.have.property(\"emoji\");",
+									"    pm.expect(jsonData.result.emoji).to.be.an(\"array\");",
+									"});",
+									"",
+									"// Test Case: Validate the properties of each emoji object in the array",
+									"pm.test(\"Each emoji object has the correct properties\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var emojiArray = jsonData.result.emoji;",
+									"    ",
+									"    emojiArray.forEach(function(emoji) {",
+									"        pm.expect(emoji).to.have.property(\"id\");",
+									"        pm.expect(emoji).to.have.property(\"type\");",
+									"        pm.expect(emoji).to.have.property(\"url\");",
+									"        pm.expect(emoji).to.have.property(\"title\");",
+									"        ",
+									"        if (emoji.hasOwnProperty(\"subtitle\")) {",
+									"            pm.expect(emoji.subtitle).to.have.property(\"text\");",
+									"            pm.expect(emoji.subtitle).to.have.property(\"isSpannable\");",
+									"            pm.expect(emoji.subtitle).to.have.property(\"startIndex\");",
+									"            pm.expect(emoji.subtitle).to.have.property(\"endIndex\");",
+									"            pm.expect(emoji.subtitle).to.have.property(\"color\");",
+									"        }",
+									"        ",
+									"        if (emoji.hasOwnProperty(\"review\")) {",
+									"            pm.expect(emoji.review).to.have.property(\"title\");",
+									"            pm.expect(emoji.review).to.have.property(\"description\");",
+									"            pm.expect(emoji.review).to.have.property(\"is_review_box_enabled\");",
+									"        }",
+									"        ",
+									"        if (emoji.hasOwnProperty(\"button\")) {",
+									"            pm.expect(emoji.button).to.have.property(\"text\");",
+									"            pm.expect(emoji.button).to.have.property(\"unSelectedBgColor\");",
+									"            pm.expect(emoji.button).to.have.property(\"selectedBgColor\");",
+									"            ",
+									"            if (emoji.button.hasOwnProperty(\"redirect_on_store\")) {",
+									"                pm.expect(emoji.button.redirect_on_store).to.be.a(\"boolean\");",
+									"            }",
+									"        }",
+									"    });",
+									"});",
+									"",
+									"// Test Case: Validate the specific values within the emoji array",
+									"pm.test(\"Validate specific emoji values\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var emojiArray = jsonData.result.emoji;",
+									"",
+									"    var emojiTypes = [\"default\", \"very_bad\", \"bad\", \"average\", \"good\", \"love_it\"];",
+									"    var expectedTitles = [\"Rate your experience!\", \"Very Bad!\", \"Bad!\", \"Average!\", \"Good!\", \"Love it!\"];",
+									"",
+									"    emojiArray.forEach(function(emoji, index) {",
+									"        pm.expect(emoji.type).to.be.oneOf(emojiTypes);",
+									"        pm.expect(emoji.title).to.be.oneOf(expectedTitles);",
+									"        ",
+									"        if (emoji.type === \"default\") {",
+									"            pm.expect(emoji.subtitle.text).to.include(\"Give us 5 stars\");",
+									"            pm.expect(emoji.subtitle.color).to.equal(\"#FDD214\");",
+									"        }",
+									"",
+									"        if (emoji.type === \"good\" || emoji.type === \"love_it\") {",
+									"            pm.expect(emoji.button.redirect_on_store).to.be.true;",
+									"            pm.expect(emoji.review.is_review_box_enabled).to.be.false;",
+									"        }",
+									"    });",
+									"});",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Test Case: Check response time",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"id": "c12a202f-1297-4fc3-a238-665c8b4527c8"
+							}
+						}
+					],
+					"id": "8e2fcf76-de9f-484c-8381-2a011bd9c1cd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Host",
+								"value": "api.pocketfm.com"
+							},
+							{
+								"key": "ad-id",
+								"value": "f06d28aa-a83d-4453-96d1-318ba1402f76"
+							},
+							{
+								"key": "version-name",
+								"value": "6.4.8"
+							},
+							{
+								"key": "region-code",
+								"value": "CH"
+							},
+							{
+								"key": "client-ts",
+								"value": "1718020916076"
+							},
+							{
+								"key": "gender",
+								"value": "female"
+							},
+							{
+								"key": "platform-type",
+								"value": "phone"
+							},
+							{
+								"key": "which-app",
+								"value": "com.radio.pocketfm"
+							},
+							{
+								"key": "is-headset",
+								"value": "false"
+							},
+							{
+								"key": "device-create-time",
+								"value": "1718018796"
+							},
+							{
+								"key": "language",
+								"value": "english"
+							},
+							{
+								"key": "app-instance-id",
+								"value": "5867bea7f609de38bf0c9a904e1a9e78"
+							},
+							{
+								"key": "access-token",
+								"value": "be9eec766cf0245f1ae4b9bb9dccedf7f6e3ca3e"
+							},
+							{
+								"key": "locale",
+								"value": "IN"
+							},
+							{
+								"key": "device-id",
+								"value": "1683728937"
+							},
+							{
+								"key": "platform",
+								"value": "android"
+							},
+							{
+								"key": "user-tg",
+								"value": "google-play"
+							},
+							{
+								"key": "uid",
+								"value": "f3419c9d848b5eecc29ee491d7d69a2bd9eac414"
+							},
+							{
+								"key": "jwt-access-token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiJmMzQxOWM5ZDg0OGI1ZWVjYzI5ZWU0OTFkN2Q2OWEyYmQ5ZWFjNDE0IiwiZXhwaXJ5IjoxNzE4ODgzMjkyfQ.AJKRFufmiDHMsXpsF_qXT1dsOKqV4OU6yr00AkU6WWc"
+							},
+							{
+								"key": "content-ln",
+								"value": "en"
+							},
+							{
+								"key": "app-name",
+								"value": "pocket_fm"
+							},
+							{
+								"key": "auth-token",
+								"value": "37aca5fd2867ca105e2a7dd13e6b08dca3e76dec"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json;charset=utf-8"
+							},
+							{
+								"key": "jwt-auth-token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkZXZpY2VfaWQiOiIxNjgzNzI4OTM3IiwiZXhwaXJ5IjoxNzE4ODgyNzk2fQ.yTgPKzRdJfewoKk6n5_KS7WqmWc7OrTMTmGGxw6ClVU"
+							},
+							{
+								"key": "screen-density",
+								"value": "1080px"
+							},
+							{
+								"key": "platform-version",
+								"value": "30"
+							},
+							{
+								"key": "app-client",
+								"value": "consumer-android"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "primary-profile",
+								"value": "true"
+							},
+							{
+								"key": "user-id",
+								"value": "f3419c9d848b5eecc29ee491d7d69a2bd9eac414"
+							},
+							{
+								"key": "app-version",
+								"value": "839"
+							},
+							{
+								"key": "ip-address",
+								"value": "10.0.2.15"
+							},
+							{
+								"key": "is-fg",
+								"value": "true"
+							},
+							{
+								"key": "fullname",
+								"value": "QW5vbnltb3Vz"
+							},
+							{
+								"key": "user-agent",
+								"value": "okhttp/4.11.0"
+							},
+							{
+								"key": "pragma",
+								"value": "no-cache"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							}
+						],
+						"url": "https://api.pocketfm.com/v2/user_api/user.feedback_popup_dialog"
+					},
+					"response": []
+				}
+			],
+			"id": "312843a4-8be6-4ad6-a91c-70171215f05b"
+		},
+		{
+			"name": "device install",
+			"item": [
+				{
+					"name": "device install us",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Result and status fields should exist in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.result).to.exist;",
+									"    pm.expect(responseData.status).to.exist;",
+									"});",
+									"",
+									"function constructVisualizerPayload() {",
+									"    return {response: pm.response.json()};",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"id": "23f9f296-0798-42b8-9282-60bc4990f0b9"
+							}
+						}
+					],
+					"id": "45c8478c-00fd-4001-8744-feb4f31e50c7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Host",
+								"value": "api.pocketfm.com"
+							},
+							{
+								"key": "ad-id",
+								"value": "6061de39-3485-439f-8ee8-9a9f0008b214"
+							},
+							{
+								"key": "version-name",
+								"value": "6.4.8"
+							},
+							{
+								"key": "region-code",
+								"value": "CH",
+								"disabled": true
+							},
+							{
+								"key": "client-ts",
+								"value": "1718599719357"
+							},
+							{
+								"key": "platform-type",
+								"value": "phone"
+							},
+							{
+								"key": "which-app",
+								"value": "com.radio.pocketfm"
+							},
+							{
+								"key": "is-headset",
+								"value": "false"
+							},
+							{
+								"key": "device-create-time",
+								"value": "1718599672"
+							},
+							{
+								"key": "app-instance-id",
+								"value": "f25ea25dc52fa13f5c3f4cfd97c97ec5"
+							},
+							{
+								"key": "access-token",
+								"value": "249004d0615345c86ecfa167d8676b06e3aebd5b"
+							},
+							{
+								"key": "locale",
+								"value": "US"
+							},
+							{
+								"key": "device-id",
+								"value": "2086581572"
+							},
+							{
+								"key": "platform",
+								"value": "android"
+							},
+							{
+								"key": "user-tg",
+								"value": "google-play"
+							},
+							{
+								"key": "uid",
+								"value": "0f0fe3a9e1851ad45b1c4ea0701bbbed64e235ae"
+							},
+							{
+								"key": "jwt-access-token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIwZjBmZTNhOWUxODUxYWQ0NWIxYzRlYTA3MDFiYmJlZDY0ZTIzNWFlIiwiZXhwaXJ5IjoxNzE5NDYzNzE5fQ.utKiG6KGyCV348y2kNE-oz3VYvaiauKXIPhhAsCqF5o"
+							},
+							{
+								"key": "content-ln",
+								"value": "en"
+							},
+							{
+								"key": "app-name",
+								"value": "pocket_fm"
+							},
+							{
+								"key": "auth-token",
+								"value": "a3b4005db65e074c959deaef2c50eb6be6dda95a"
+							},
+							{
+								"key": "jwt-auth-token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkZXZpY2VfaWQiOiIyMDg2NTgxNTcyIiwiZXhwaXJ5IjoxNzE5NDYzNjcxfQ.C8extymh3JygaYfmL-7BS4ePQLbTLHeljlyylh73GPM"
+							},
+							{
+								"key": "screen-density",
+								"value": "1080px"
+							},
+							{
+								"key": "platform-version",
+								"value": "30"
+							},
+							{
+								"key": "app-client",
+								"value": "consumer-android"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "primary-profile",
+								"value": "true"
+							},
+							{
+								"key": "user-id",
+								"value": "0f0fe3a9e1851ad45b1c4ea0701bbbed64e235ae"
+							},
+							{
+								"key": "app-version",
+								"value": "839"
+							},
+							{
+								"key": "ip-address",
+								"value": "10.0.2.15"
+							},
+							{
+								"key": "is-fg",
+								"value": "true"
+							},
+							{
+								"key": "fullname",
+								"value": "QW5vbnltb3Vz"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "user-agent",
+								"value": "okhttp/4.11.0"
+							},
+							{
+								"key": "pragma",
+								"value": "no-cache"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ad_id\":\"6061de39-3485-439f-8ee8-9a9f0008b214\",\"app_version\":\"860\",\"device_id\":\"20865815372\",\"is_reinstall\":0,\"deep_link\":\"222\"}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": "{{url}}/v2/user_api/device.install/"
+					},
+					"response": []
+				},
+				{
+					"name": "device install india",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response time is less than 500ms\", function () {",
+									"  pm.expect(pm.response.responseTime).to.be.below(500);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Result and status fields should exist in the response\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.result).to.exist;",
+									"    pm.expect(responseData.status).to.exist;",
+									"});",
+									"",
+									"function constructVisualizerPayload() {",
+									"    return {response: pm.response.json()};",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"id": "0931014d-f30f-471c-be45-0aa8e9d60d56"
+							}
+						}
+					],
+					"id": "d75a846d-f641-4590-8069-57a111d545ca",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Host",
+								"value": "api.pocketfm.com"
+							},
+							{
+								"key": "ad-id",
+								"value": "6061de39-3485-439f-8ee8-9a9f0008b214"
+							},
+							{
+								"key": "version-name",
+								"value": "6.4.8"
+							},
+							{
+								"key": "region-code",
+								"value": "CH",
+								"disabled": true
+							},
+							{
+								"key": "client-ts",
+								"value": "1718599719357"
+							},
+							{
+								"key": "platform-type",
+								"value": "phone"
+							},
+							{
+								"key": "which-app",
+								"value": "com.radio.pocketfm"
+							},
+							{
+								"key": "is-headset",
+								"value": "false"
+							},
+							{
+								"key": "device-create-time",
+								"value": "1718599672"
+							},
+							{
+								"key": "app-instance-id",
+								"value": "f25ea25dc52fa13f5c3f4cfd97c97ec5"
+							},
+							{
+								"key": "access-token",
+								"value": "249004d0615345c86ecfa167d8676b06e3aebd5b"
+							},
+							{
+								"key": "locale",
+								"value": "IN"
+							},
+							{
+								"key": "device-id",
+								"value": "2086581572"
+							},
+							{
+								"key": "platform",
+								"value": "android"
+							},
+							{
+								"key": "user-tg",
+								"value": "google-play"
+							},
+							{
+								"key": "uid",
+								"value": "0f0fe3a9e1851ad45b1c4ea0701bbbed64e235ae"
+							},
+							{
+								"key": "jwt-access-token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiIwZjBmZTNhOWUxODUxYWQ0NWIxYzRlYTA3MDFiYmJlZDY0ZTIzNWFlIiwiZXhwaXJ5IjoxNzE5NDYzNzE5fQ.utKiG6KGyCV348y2kNE-oz3VYvaiauKXIPhhAsCqF5o"
+							},
+							{
+								"key": "content-ln",
+								"value": "en"
+							},
+							{
+								"key": "app-name",
+								"value": "pocket_fm"
+							},
+							{
+								"key": "auth-token",
+								"value": "a3b4005db65e074c959deaef2c50eb6be6dda95a"
+							},
+							{
+								"key": "jwt-auth-token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkZXZpY2VfaWQiOiIyMDg2NTgxNTcyIiwiZXhwaXJ5IjoxNzE5NDYzNjcxfQ.C8extymh3JygaYfmL-7BS4ePQLbTLHeljlyylh73GPM"
+							},
+							{
+								"key": "screen-density",
+								"value": "1080px"
+							},
+							{
+								"key": "platform-version",
+								"value": "30"
+							},
+							{
+								"key": "app-client",
+								"value": "consumer-android"
+							},
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "primary-profile",
+								"value": "true"
+							},
+							{
+								"key": "user-id",
+								"value": "0f0fe3a9e1851ad45b1c4ea0701bbbed64e235ae"
+							},
+							{
+								"key": "app-version",
+								"value": "839"
+							},
+							{
+								"key": "ip-address",
+								"value": "10.0.2.15"
+							},
+							{
+								"key": "is-fg",
+								"value": "true"
+							},
+							{
+								"key": "fullname",
+								"value": "QW5vbnltb3Vz"
+							},
+							{
+								"key": "content-type",
+								"value": "application/json; charset=UTF-8"
+							},
+							{
+								"key": "user-agent",
+								"value": "okhttp/4.11.0"
+							},
+							{
+								"key": "pragma",
+								"value": "no-cache"
+							},
+							{
+								"key": "cache-control",
+								"value": "no-cache"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"ad_id\":\"6061de39-3485-439f-8ee8-9a9f0008b214\",\"app_version\":\"8\",\"device_id\":\"2086581572\",\"is_reinstall\":0,\"deep_link\":\"\"}",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": "{{url}}/v2/user_api/device.install/"
+					},
+					"response": []
+				}
+			],
+			"id": "f81e6bc7-e17e-4ab3-a898-fa989ff8a18c"
+		}
+	]
+}
